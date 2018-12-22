@@ -1,0 +1,36 @@
+{% extends '_template.html' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2 align="center">Единицы измерения</h2>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Полное название</th>
+                    <th>Единицы измерения</th>
+                    <th>Код</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for guber in object_list %}
+                    <tr>
+                        <td>{{ guber.name }}</td>
+                        <td>{{ guber.short_name }}</td>
+                        <td>{{ guber.code }}</td>
+                        <td><a href="{% url "ei_view" guber.id %}">Подробнее</a></td>
+                        <td><a href="{% url "ei_edit" guber.id %}">Редактировать</a></td>
+                        <td><a href="{% url "ei_delete" guber.id %}">Удалить</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{% url "ei_new" %}">Добавить</a>
+        </div>
+    </div>
+{% endblock %}
