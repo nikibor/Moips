@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cars'
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'modis',
+        'NAME': 'moips',
         'USER': 'develop',
         'PASSWORD': 'develop',
         'HOST': '127.0.0.1',
