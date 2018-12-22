@@ -1,0 +1,16 @@
+{% extends '_template.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Классы изделия
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Обозначение изделия:</b> {{ object.short_name }}</li>
+            <li class="list-group-item"><b>Полное название изделия:</b> {{ object.name }}</li>
+            <li class="list-group-item"><b>Терминальный класс изделия:</b> {{ object.conf }}</li>
+            <li class="list-group-item"><b>Класс изделия:</b> {{ object.id_class }}</li>
+            <li class="list-group-item"><b>Родительский класс:</b> {{ object.type_prod }}</li>
+        </ul>
+    </div>
+{% endblock %}

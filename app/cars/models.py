@@ -19,6 +19,9 @@ class EI(models.Model):
         verbose_name_plural = 'Еденицы измерения'
         db_table = 'ei'
 
+    def __str__(self):
+        return self.name
+
 
 class Enum(models.Model):
     name = models.CharField(
@@ -36,6 +39,9 @@ class Enum(models.Model):
         verbose_name_plural = ''
         db_table = 'enum'
 
+    def __str__(self):
+        return self.name
+
 
 class TypePar(models.Model):
     name_type = models.CharField(
@@ -46,6 +52,9 @@ class TypePar(models.Model):
         verbose_name = ''
         verbose_name_plural = ''
         db_table = 'type_par'
+
+    def __str__(self):
+        return self.name_type
 
 
 class Customer(models.Model):
@@ -70,6 +79,9 @@ class Customer(models.Model):
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
         db_table = 'customer'
+
+    def __str__(self):
+        return self.name + ' ' + self.surname
 
 
 class ChemClass(models.Model):
@@ -97,6 +109,9 @@ class ChemClass(models.Model):
         verbose_name_plural = ''
         db_table = 'chem_class'
 
+    def __str__(self):
+        return self.name
+
 
 class Prod(models.Model):
     name = models.CharField(
@@ -113,18 +128,23 @@ class Prod(models.Model):
     id_class = models.ForeignKey(
         'ChemClass',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        verbose_name='Класс изделия'
     )
     type_prod = models.ForeignKey(
         'Prod',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        verbose_name='Родительское изделие'
     )
 
     class Meta:
         verbose_name = ''
         verbose_name_plural = ''
         db_table = 'prod'
+
+    def __str__(self):
+        return self.name
 
 
 class Parameter(models.Model):
@@ -157,6 +177,9 @@ class Parameter(models.Model):
         verbose_name_plural = 'Параметры'
         db_table = 'parametr'
 
+    def __str__(self):
+        return self.name
+
 
 class ParClass(models.Model):
     id_par = models.ForeignKey(
@@ -181,6 +204,9 @@ class ParClass(models.Model):
         verbose_name_plural = ''
         db_table = 'par_class'
 
+    def __str__(self):
+        return 'ParClass'
+
 
 class EnumVal(models.Model):
     num = models.FloatField(
@@ -204,6 +230,9 @@ class EnumVal(models.Model):
         verbose_name = ''
         verbose_name_plural = ''
         db_table = 'enum_val'
+
+    def __str__(self):
+        return self.name
 
 
 # class PosAgr(models.Model):
@@ -247,6 +276,9 @@ class Materials(models.Model):
         verbose_name_plural = 'Материалы'
         db_table = 'materials'
 
+    def __str__(self):
+        return self.val
+
 
 class Ord(models.Model):
     num = models.IntegerField(
@@ -265,6 +297,9 @@ class Ord(models.Model):
         verbose_name = ''
         verbose_name_plural = ''
         db_table = 'ord'
+
+    def __str__(self):
+        return self.customer.name
 
 
 class ParProd(models.Model):
@@ -296,6 +331,9 @@ class ParProd(models.Model):
         verbose_name_plural = ''
         db_table = 'par_prod'
 
+    def __str__(self):
+        return self.note
+
 
 class PosOrd(models.Model):
     num_pos = models.IntegerField(
@@ -319,3 +357,6 @@ class PosOrd(models.Model):
         verbose_name = ''
         verbose_name_plural = ''
         db_table = 'pos_ord'
+
+    def __str__(self):
+        return self.sums

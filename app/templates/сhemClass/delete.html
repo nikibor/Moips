@@ -1,0 +1,16 @@
+{% extends '_template.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Вы уверены, что хотите удалить {{ object }}</h3>
+        </div>
+        <form method="post" style="margin: 15px">
+            {% csrf_token %}
+            {% buttons %}
+                <input type="submit"  value="Подтвердить"/>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}

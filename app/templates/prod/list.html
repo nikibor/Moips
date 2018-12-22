@@ -1,0 +1,40 @@
+{% extends '_template.html' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2 align="center">Справочник изделий</h2>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Обозначение изделия</th>
+                    <th>Полное название изделия</th>
+                    <th>Терминальный класс изделия</th>
+                    <th>Класс изделия</th>
+                    <th>Родительский класс</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for guber in object_list %}
+                    <tr>
+                        <td>{{ guber.short_name }}</td>
+                        <td>{{ guber.name }}</td>
+                        <td>{{ guber.conf }}</td>
+                        <td>{{ guber.id_class }}</td>
+                        <td>{{ guber.type_prod }}</td>
+                        <td><a href="{% url "prod_view" guber.id %}">Подробнее</a></td>
+                        <td><a href="{% url "prod_edit" guber.id %}">Редактировать</a></td>
+                        <td><a href="{% url "prod_delete" guber.id %}">Удалить</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{% url "prod_new" %}">Добавить</a>
+        </div>
+    </div>
+{% endblock %}
