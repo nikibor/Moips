@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import *
-from .models import ChemClass, EI, Prod
+
+from cars.models import *
 
 
 def index_page(request):
@@ -15,6 +16,7 @@ def index_page(request):
 class EIList(ListView):
     model = EI
     template_name = 'ei/list.html'
+    paginate_by = 10
 
 
 class EIView(DetailView):
@@ -46,6 +48,7 @@ class EIDelete(DeleteView):
 class ChemClassList(ListView):
     model = ChemClass
     template_name = 'сhemClass/list.html'
+    paginate_by = 10
 
 
 class ChemClassView(DetailView):
@@ -77,11 +80,39 @@ class ChemClassDelete(DeleteView):
 class ProdList(ListView):
     model = Prod
     template_name = 'prod/list.html'
+    paginate_by = 10
 
 
 class ProdView(DetailView):
     model = Prod
     template_name = 'prod/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProdView, self).get_context_data()
+        myobject = self.object
+        context['object'] = myobject
+        connected = ChemClass.objects.filter(main_class=myobject.id_class.id) # подсистемы авто: стеклоподъемник и ост.
+        subs = []
+        for con in connected:
+            sub_con = ChemClass.objects.filter(main_class=con.id) # компоненты подсистемы: ручка, кондесатор и т.д
+            gubs = []
+            for sub_c in sub_con:
+                gubs.append({
+                    'name': sub_c.name,
+                    'short_name': sub_c.short_name,
+                    'base_ei': sub_c.base_ei
+                })
+            subs.append(
+                {
+                    'name': con.name,
+                    'short_name': con.short_name,
+                    'base_ei': con.base_ei,
+                    'components': gubs
+                }
+            )
+        context['connected'] = subs
+        # Then return
+        return context
 
 
 class ProdCreate(CreateView):

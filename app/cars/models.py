@@ -3,15 +3,18 @@ from django.db import models
 
 class EI(models.Model):
     code = models.IntegerField(
-        null=False
+        null=False,
+        verbose_name='Код'
     )
     name = models.CharField(
         max_length=255,
-        null=False
+        null=False,
+        verbose_name='Полное название'
     )
     short_name = models.CharField(
         max_length=40,
-        null=False
+        null=False,
+        verbose_name='Единицы измерения'
     )
 
     class Meta:
@@ -87,21 +90,28 @@ class Customer(models.Model):
 class ChemClass(models.Model):
     name = models.CharField(
         max_length=255,
-        null=False
+        null=False,
+        verbose_name='Обозначение класса изделия'
     )
     short_name = models.CharField(
         max_length=255,
-        null=False
+        null=True,
+        blank=True,
+        verbose_name='Полное имя класса изделия'
     )
     base_ei = models.ForeignKey(
         'EI',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True,
+        verbose_name='Базовая ед. измерения'
     )
     main_class = models.ForeignKey(
         'ChemClass',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True,
+        verbose_name='Родительский класс'
     )
 
     class Meta:
@@ -116,26 +126,31 @@ class ChemClass(models.Model):
 class Prod(models.Model):
     name = models.CharField(
         max_length=255,
-        null=False
+        null=False,
+        verbose_name='Полное название изделия'
     )
     short_name = models.CharField(
         max_length=40,
-        null=False
+        null=False,
+        verbose_name='Обозначение изделия'
     )
     conf = models.FloatField(
-        null=False
+        null=False,
+        verbose_name='Терминальный класс изделия'
     )
     id_class = models.ForeignKey(
         'ChemClass',
         on_delete=models.CASCADE,
         null=True,
-        verbose_name='Класс изделия'
+        verbose_name='Класс изделия',
+        blank=True
     )
     type_prod = models.ForeignKey(
         'Prod',
         on_delete=models.CASCADE,
         null=True,
-        verbose_name='Родительское изделие'
+        verbose_name='Родительское изделие',
+        blank=True
     )
 
     class Meta:
@@ -159,17 +174,20 @@ class Parameter(models.Model):
     ei_par = models.ForeignKey(
         'EI',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True
     )
     id_enum = models.ForeignKey(
         'Enum',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True
     )
     id_type = models.ForeignKey(
         'TypePar',
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True
     )
 
     class Meta:
@@ -193,7 +211,8 @@ class ParClass(models.Model):
         null=False
     )
     min_val = models.IntegerField(
-        null=True
+        null=True,
+        blank=True
     )
     max_val = models.IntegerField(
         null=False
