@@ -11,6 +11,7 @@
             <li class="list-group-item"><b>Терминальный класс изделия:</b> {{ object.conf }}</li>
             <li class="list-group-item"><b>Родительский класс:</b> {{ object.type_prod }}</li>
             <li class="list-group-item"><b>Класс изделия:</b> '{{ object.id_class }}' состоит из
+
                 {% for guber in connected %}
                     <ul class="list-group">
                         <li class="list-group-item"><b>Полное имя класса изделия:</b> {{ guber.short_name }}</li>

@@ -24,4 +24,6 @@ urlpatterns = [
     path('prod/view/<int:pk>', views.ProdView.as_view(), name='prod_view'),
     path('prod/edit/<int:pk>', views.ProdUpdate.as_view(), name='prod_edit'),
     path('prod/delete/<int:pk>', views.ProdDelete.as_view(), name='prod_delete'),
+
+    path('ajax/getChildren', views.get_chem_children, name='get_chem_children'),
 ]

@@ -1,8 +1,11 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import *
 
+from cars.forms import ProdForm
 from cars.models import *
+from cars.repository import ChemClassRepository
 
 
 def index_page(request):
@@ -91,10 +94,10 @@ class ProdView(DetailView):
         context = super(ProdView, self).get_context_data()
         myobject = self.object
         context['object'] = myobject
-        connected = ChemClass.objects.filter(main_class=myobject.id_class.id) # подсистемы авто: стеклоподъемник и ост.
+        connected = ChemClass.objects.filter(main_class=myobject.id_class.id)  # подсистемы авто: стеклоподъемник и ост.
         subs = []
         for con in connected:
-            sub_con = ChemClass.objects.filter(main_class=con.id) # компоненты подсистемы: ручка, кондесатор и т.д
+            sub_con = ChemClass.objects.filter(main_class=con.id)  # компоненты подсистемы: ручка, кондесатор и т.д
             gubs = []
             for sub_c in sub_con:
                 gubs.append({
@@ -117,9 +120,9 @@ class ProdView(DetailView):
 
 class ProdCreate(CreateView):
     model = Prod
-    fields = ['name', 'short_name', 'conf', 'id_class', 'type_prod']
     success_url = reverse_lazy('prod_list')
     template_name = 'prod/_form.html'
+    form_class = ProdForm
 
 
 class ProdUpdate(UpdateView):
@@ -133,3 +136,21 @@ class ProdDelete(DeleteView):
     model = Prod
     success_url = reverse_lazy('prod_list')
     template_name = 'prod/delete.html'
+
+
+def get_chem_children(request):
+    """
+    Возвращает потомков класса изделия
+    """
+    chem_class_id = request.GET.get('chem_class_id', None)
+    child_classes = ChemClassRepository.get_child(chem_class_id)
+    classes = []
+    for c_class in child_classes:
+        classes.append({
+            'id': c_class.pk,
+            'name': c_class.name,
+        })
+    data = {
+        'classes': classes
+    }
+    return JsonResponse(data)
