@@ -1,0 +1,17 @@
+{% extends '_template.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Форма</h2>
+        </div>
+        <form method="post" style="margin: 15px;">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <input type="submit" value="Сохранить"/>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}

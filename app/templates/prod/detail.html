@@ -1,0 +1,56 @@
+{% extends '_template.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2 align="center">Классы изделия</h2>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Обозначение изделия:</b> {{ object.short_name }}</li>
+            <li class="list-group-item"><b>Полное название изделия:</b> {{ object.name }}</li>
+            <li class="list-group-item"><b>Терминальный класс изделия:</b> {{ object.conf }}</li>
+            <li class="list-group-item"><b>Родительский класс:</b> {{ object.type_prod }}</li>
+            <li class="list-group-item"><b>Класс изделия:</b> '{{ object.id_class }}' состоит из
+                {% for guber in connected %}
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>Полное имя класса изделия:</b> {{ guber.short_name }}</li>
+                        <li class="list-group-item"><b>Обозначение класса изделия:</b> {{ guber.name }}</li>
+                        <li class="list-group-item"><b>Базовая ед. измерения:</b>
+                            <ul class="list-group">
+                                <li class="list-group-item"><b>Название:</b> {{ guber.base_ei.name }}</li>
+                                <li class="list-group-item"><b>Ед. измерения:</b> {{ guber.base_ei.short_name }}</li>
+                                <li class="list-group-item"><b>Код:</b> {{ guber.base_ei.code }}</li>
+                            </ul>
+                        </li>
+                        {% if guber.components %}
+                            <li class="list-group-item"><b>Компоненты '{{ guber.name }}' :</b>
+                                <ul class="list-group">
+                                    {% for sub in guber.components %}
+
+                                        <li class="list-group-item"><b>Полное имя класса
+                                            изделия:</b> {{ sub.short_name }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Обозначение класса изделия:</b> {{ sub.name }}
+                                        </li>
+                                        <li class="list-group-item"><b>Базовая ед. измерения:</b>
+                                            <ul class="list-group">
+                                                <li class="list-group-item"><b>Название:</b> {{ sub.base_ei.name }}</li>
+                                                <li class="list-group-item"><b>Ед.
+                                                    измерения:</b> {{ sub.base_ei.short_name }}</li>
+                                                <li class="list-group-item"><b>Код:</b> {{ sub.base_ei.code }}</li>
+                                            </ul>
+                                        </li>
+
+                                    {% endfor %}
+                                </ul>
+                                <br>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <hr>
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends '_template.html' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h2 align="center">Классы изделия</h2>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Полное имя класса изделия</th>
+                    <th>Обозначение класса изделия</th>
+                    <th>Базовая ед. измерения</th>
+                    <th>Родительский класс</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for guber in object_list %}
+                    <tr>
+                        <td>{{ guber.short_name }}</td>
+                        <td>{{ guber.name }}</td>
+                        <td>{{ guber.base_ei }}</td>
+                        <td>{{ guber.main_class }}</td>
+                        <td><a href="{% url "сhemClass_view" guber.id %}">Подробнее</a></td>
+                        <td><a href="{% url "сhemClass_edit" guber.id %}">Редактировать</a></td>
+                        <td><a href="{% url "сhemClass_delete" guber.id %}">Удалить</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="disabled page-item">
+                            <span class="page-link">&laquo;</span>
+                        </li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active page-item">
+                                <span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="disabled page-item">
+                            <span class="page-link">&raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+
+            <a href="{% url "сhemClass_new" %}" class="btn btn-primary">Добавить</a>
+        </div>
+    </div>
+{% endblock %}
