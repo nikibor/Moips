@@ -38,8 +38,8 @@ class Enum(models.Model):
 
     # TODO: verb_name
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Перечисление параметров обвесов'
+        verbose_name_plural = 'Перечисления параметров обвесов'
         db_table = 'enum'
 
     def __str__(self):
@@ -52,8 +52,8 @@ class TypePar(models.Model):
         null=False)
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Тип параметров обвесов'
+        verbose_name_plural = 'Типы параметров обвесов'
         db_table = 'type_par'
 
     def __str__(self):
@@ -115,8 +115,8 @@ class ChemClass(models.Model):
     )
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Класс'
+        verbose_name_plural = 'Классы'
         db_table = 'chem_class'
 
     def __str__(self):
@@ -154,12 +154,15 @@ class Prod(models.Model):
     )
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Изделие'
+        verbose_name_plural = 'Изделия'
         db_table = 'prod'
 
     def __str__(self):
         return self.name
+
+    # def chem_classes(self):
+    #     return ChemClass.objects.filter(id=self.id_class.name)
 
 
 class Parameter(models.Model):
@@ -246,33 +249,12 @@ class EnumVal(models.Model):
     )
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Вариан параметров'
+        verbose_name_plural = 'Варианты параметров'
         db_table = 'enum_val'
 
     def __str__(self):
         return self.name
-
-
-# class PosAgr(models.Model):
-#     agr_par = models.ForeignKey(
-#         'Parameter',
-#         on_delete=models.CASCADE,
-#         null=False,
-#     )
-#     id_par = models.ForeignKey(
-#         'Parameter',
-#         on_delete=models.CASCADE,
-#         null=False,
-#     )
-#     num = models.IntegerField(
-#         null=False
-#     )
-#
-#     class Meta:
-#         verbose_name = ''
-#         verbose_name_plural = ''
-#         db_table = 'pos_agr'
 
 
 class Materials(models.Model):
@@ -296,7 +278,7 @@ class Materials(models.Model):
         db_table = 'materials'
 
     def __str__(self):
-        return self.val
+        return self.id_prod.name
 
 
 class Ord(models.Model):
@@ -313,8 +295,8 @@ class Ord(models.Model):
     )
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
         db_table = 'ord'
 
     def __str__(self):
@@ -346,8 +328,8 @@ class ParProd(models.Model):
     )
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Параметр изделия'
+        verbose_name_plural = 'Параметры изделия'
         db_table = 'par_prod'
 
     def __str__(self):
@@ -373,9 +355,9 @@ class PosOrd(models.Model):
     )
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Состав заказа'
+        verbose_name_plural = 'Состав заказов'
         db_table = 'pos_ord'
 
     def __str__(self):
-        return self.sums
+        return self.id_prod.name

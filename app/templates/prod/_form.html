@@ -2,16 +2,111 @@
 {% load bootstrap4 %}
 
 {% block content %}
+
     <div class="card">
         <div class="card-header">
-            <h2>Форма</h2>
+            <h2>Форма создания изделия</h2>
         </div>
         <form method="post" style="margin: 15px;">
             {% csrf_token %}
             {% bootstrap_form form %}
+            <hr>
+            <div id="sub_classes"></div>
             {% buttons %}
-                <input type="submit" value="Сохранить"/>
+                <input type="submit" class="btn btn-primary" value="Сохранить"/>
             {% endbuttons %}
         </form>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript">
+        function httpGet(theUrl) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, false); // false for synchronous request
+            xmlHttp.send(null);
+            return xmlHttp.responseText;
+        }
+
+        $("#id_id_class").change(function () {
+            var chem_class_id = $(this).val();
+            var selected_text = this.options[this.selectedIndex].text;
+            $.ajax({
+                url: '/ajax/getChildren',
+                data: {
+                    'chem_class_id': chem_class_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    {#document.getElementById('sub_classes').innerHTML = '';#}
+                    if (data.classes.length != 0) {
+                        document.getElementById('sub_classes').innerHTML += '<h3 align="center">' + selected_text + '</h1>';
+                        data.classes.forEach(function (entry) {
+                            var response = JSON.parse(httpGet('/ajax/getChildren?chem_class_id=' + entry.id));
+
+                            var options = '';
+                            response.classes.forEach(function (sub_class) {
+                                var temp = '<option value="' + sub_class.id + '">' + sub_class.name + '</option>';
+                                options += temp;
+                            });
+
+                            document.getElementById('sub_classes').innerHTML +=
+                                '<div class="form-group">' +
+                                '<label for="id_id_class"> Подкласс ' + entry.name + '</label>' +
+                                '<select class="form-control" name="id_class" title id="id_id_class">' +
+                                options +
+                                '</select>' +
+                                '</div><hr>'
+                        });
+
+                    }
+                }
+            });
+        });
+
+    </script>
+{#    <script type="application/javascript">#}
+{#        function httpGet(theUrl) {#}
+{#            var xmlHttp = new XMLHttpRequest();#}
+{#            xmlHttp.open("GET", theUrl, false); // false for synchronous request#}
+{#            xmlHttp.send(null);#}
+{#            return xmlHttp.responseText;#}
+{#        }#}
+{##}
+{#        $("#id_class").change(function () {#}
+{#            var chem_class_id = $(this).val();#}
+{#            var selected_text = this.options[this.selectedIndex].text;#}
+{#            $.ajax({#}
+{#                url: '/ajax/getChildren',#}
+{#                data: {#}
+{#                    'chem_class_id': chem_class_id#}
+{#                },#}
+{#                dataType: 'json',#}
+{#                success: function (data) {#}
+{#                    if (data.classes.length != 0) {#}
+{#                        document.getElementById('id_class').innerHTML += '<h3 align="center">' + selected_text + '</h1>';#}
+{#                        data.classes.forEach(function (entry) {#}
+{#                            var response = JSON.parse(httpGet('/ajax/getChildren?chem_class_id=' + entry.id));#}
+{##}
+{#                            var options = '';#}
+{#                            response.classes.forEach(function (sub_class) {#}
+{#                                var temp = '<option value="' + sub_class.id + '">' + sub_class.name + '</option>';#}
+{#                                options += temp;#}
+{#                            });#}
+{##}
+{#                            document.getElementById('id_class').innerHTML +=#}
+{#                                '<div class="form-group">' +#}
+{#                                '<label for="id_id_class"> Подкласс ' + entry.name + '</label>' +#}
+{#                                '<select class="form-control" name="id_class" title id="id_id_class">' +#}
+{#                                options +#}
+{#                                '</select>' +#}
+{#                                '</div><hr>'#}
+{#                        });#}
+{##}
+{#                    }#}
+{#                }#}
+{#            });#}
+{#        });#}
+{##}
+{#    </script>#}
 {% endblock %}
