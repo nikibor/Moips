@@ -26,4 +26,5 @@ urlpatterns = [
     path('prod/delete/<int:pk>', views.ProdDelete.as_view(), name='prod_delete'),
 
     path('ajax/getChildren', views.get_chem_children, name='get_chem_children'),
+    path('ajax/getProduction', views.get_chem_products, name='get_chem_products'),
 ]

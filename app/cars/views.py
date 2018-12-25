@@ -5,7 +5,7 @@ from django.views.generic import *
 
 from cars.forms import ProdForm
 from cars.models import *
-from cars.repository import ChemClassRepository
+from cars.repository import ChemClassRepository, ProdRepository
 
 
 def index_page(request):
@@ -143,9 +143,27 @@ def get_chem_children(request):
     Возвращает потомков класса изделия
     """
     chem_class_id = request.GET.get('chem_class_id', None)
-    child_classes = ChemClassRepository.get_child(chem_class_id)
+    products = ChemClassRepository.get_child(chem_class_id)
     classes = []
-    for c_class in child_classes:
+    for c_class in products:
+        classes.append({
+            'id': c_class.pk,
+            'name': c_class.name,
+        })
+    data = {
+        'classes': classes
+    }
+    return JsonResponse(data)
+
+
+def get_chem_products(request):
+    """
+    Возвращает изделия класса
+    """
+    chem_class_id = request.GET.get('chem_class_id', None)
+    products = ProdRepository.get_class_production(chem_class_id)
+    classes = []
+    for c_class in products:
         classes.append({
             'id': c_class.pk,
             'name': c_class.name,
